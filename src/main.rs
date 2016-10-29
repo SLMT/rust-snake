@@ -1,10 +1,14 @@
 extern crate piston_window;
 
+mod snake;
+
 use piston_window::*;
 use piston_window::types::Color;
 
+use snake::Snake;
+
 const BACK_COLOR: Color = [0.204, 0.286, 0.369, 1.0];
-const SNAKE_COLOR: Color = [0.741, 0.765, 0.78, 1.0];
+
 
 struct Point<T> {
     x: T, y: T
@@ -17,6 +21,8 @@ fn main() {
 
     let mut snake_pos: Point<f64> =
         Point {x: 200.0, y: 200.0};
+
+    let mut snake = Snake::new(100.0, 100.0);
 
     // Event loop
     while let Some(event) = window.next() {
@@ -35,8 +41,7 @@ fn main() {
         window.draw_2d(&event, |c, g| {
             clear(BACK_COLOR, g);
 
-            rectangle(SNAKE_COLOR, [snake_pos.x, snake_pos.y,
-                50.0, 50.0], c.transform, g);
+            snake.draw(&c, g);
         });
     }
 }
