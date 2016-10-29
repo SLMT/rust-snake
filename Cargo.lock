@@ -1,0 +1,4 @@
+[root]
+name = "rust-snake"
+version = "0.1.0"
+
