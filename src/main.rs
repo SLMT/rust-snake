@@ -5,23 +5,16 @@ mod snake;
 use piston_window::*;
 use piston_window::types::Color;
 
-use snake::Snake;
+use snake::{Snake, Direction};
 
 const BACK_COLOR: Color = [0.204, 0.286, 0.369, 1.0];
-
-
-struct Point<T> {
-    x: T, y: T
-}
 
 fn main() {
     // Create a window
     let mut window: PistonWindow = WindowSettings::new("Hello Meow!!",
         [640, 480]).exit_on_esc(true).build().unwrap();
 
-    let mut snake_pos: Point<f64> =
-        Point {x: 200.0, y: 200.0};
-
+    // Create a snake
     let mut snake = Snake::new(100.0, 100.0);
 
     // Event loop
@@ -30,14 +23,16 @@ fn main() {
         // Catch the events of the keyboard
         if let Some(Button::Keyboard(key)) = event.press_args() {
             match key {
-                Key::Up => snake_pos.y -= 10.0,
-                Key::Down => snake_pos.y += 10.0,
-                Key::Left => snake_pos.x -= 10.0,
-                Key::Right => snake_pos.x += 10.0,
+                Key::Up => snake.move_forward(Some(Direction::Up)),
+                Key::Down => snake.move_forward(Some(Direction::Down)),
+                Key::Left => snake.move_forward(Some(Direction::Left)),
+                Key::Right => snake.move_forward(Some(Direction::Right)),
+                Key::Space => snake.move_forward(None),
                 _ => {}
             }
         }
 
+        // Draw all of them
         window.draw_2d(&event, |c, g| {
             clear(BACK_COLOR, g);
 
