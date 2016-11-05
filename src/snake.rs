@@ -7,8 +7,9 @@ use piston_window::types::Color;
 
 use drawing::draw_block;
 
-const SNAKE_COLOR: Color = [0.741, 0.765, 0.78, 1.0];
+const SNAKE_COLOR: Color = [0.18, 0.80, 0.44, 1.0];
 
+#[derive(Clone, Copy)]
 pub enum Direction {
     Up, Down, Left, Right
 }
@@ -91,6 +92,26 @@ impl Snake {
     pub fn head_position(&self) -> (i32, i32) {
         let head_block = self.body.front().unwrap();
         (head_block.x, head_block.y)
+    }
+
+    pub fn next_head_position(&self, dir: Option<Direction>) -> (i32, i32) {
+        // Retrieve the position of the head block
+        let (head_x, head_y): (i32, i32) = self.head_position();
+
+        // Get moving direction
+        let mut moving_dir = self.moving_direction;
+        match dir {
+            Some(d) => moving_dir = d,
+            None => {}
+        }
+
+        // The snake moves
+        match moving_dir {
+            Direction::Up => (head_x, head_y - 1),
+            Direction::Down => (head_x, head_y + 1),
+            Direction::Left => (head_x - 1, head_y),
+            Direction::Right => (head_x + 1, head_y)
+        }
     }
 
     pub fn restore_last_removed(&mut self) {

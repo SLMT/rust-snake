@@ -8,16 +8,19 @@ use piston_window::*;
 use piston_window::types::Color;
 
 use game::Game;
+use drawing::to_gui_coord_u32;
 
 const BACK_COLOR: Color = [0.204, 0.286, 0.369, 1.0];
 
 fn main() {
+    let (width, height) = (20, 20);
+
     // Create a window
     let mut window: PistonWindow = WindowSettings::new("Hello Meow!!",
-        [640, 480]).exit_on_esc(true).build().unwrap();
+        [to_gui_coord_u32(width), to_gui_coord_u32(height)]).exit_on_esc(true).build().unwrap();
 
     // Create a snake
-    let mut game = Game::new();
+    let mut game = Game::new(width, height);
 
     // Event loop
     while let Some(event) = window.next() {
