@@ -2,13 +2,12 @@ extern crate piston_window;
 
 mod snake;
 mod game;
+mod drawing;
 
 use piston_window::*;
 use piston_window::types::Color;
 
 use game::Game;
-
-const BLOCK_SIZE: f64 = 50.0;
 
 const BACK_COLOR: Color = [0.204, 0.286, 0.369, 1.0];
 
