@@ -6,15 +6,15 @@ use piston_window::G2d;
 use piston_window::rectangle;
 use piston_window::types::Color;
 
-const SNAKE_COLOR: Color = [0.741, 0.765, 0.78, 1.0];
+use BLOCK_SIZE;
 
-const BLOCK_SIZE: f64 = 50.0;
+const SNAKE_COLOR: Color = [0.741, 0.765, 0.78, 1.0];
 
 pub enum Direction {
     Up, Down, Left, Right
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Block {
     x: f64,
     y: f64
@@ -22,7 +22,8 @@ struct Block {
 
 pub struct Snake {
     moving_direction: Direction,
-    body: LinkedList<Block>
+    body: LinkedList<Block>,
+    last_removed_block: Option<Block>
 }
 
 impl Snake {
@@ -43,7 +44,8 @@ impl Snake {
 
         Snake {
             moving_direction: Direction::Right,
-            body: body
+            body: body,
+            last_removed_block: None
         }
     }
 
@@ -62,12 +64,7 @@ impl Snake {
         }
 
         // Retrieve the position of the head block
-        let (last_x, last_y): (f64, f64);
-        {
-            let head_block = self.body.front().unwrap();
-            last_x = head_block.x;
-            last_y = head_block.y;
-        }
+        let (last_x, last_y): (f64, f64) = self.head_position();
 
         // The snake moves
         let new_block = match self.moving_direction {
@@ -89,6 +86,17 @@ impl Snake {
             }
         };
         self.body.push_front(new_block);
-        self.body.pop_back();
+        let removed_blk = self.body.pop_back().unwrap();
+        self.last_removed_block = Some(removed_blk);
+    }
+
+    pub fn head_position(&self) -> (f64, f64) {
+        let head_block = self.body.front().unwrap();
+        (head_block.x, head_block.y)
+    }
+
+    pub fn restore_last_removed(&mut self) {
+        let blk = self.last_removed_block.clone().unwrap();
+        self.body.push_back(blk);
     }
 }
