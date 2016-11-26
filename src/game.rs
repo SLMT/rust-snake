@@ -116,6 +116,12 @@ impl Game {
     fn check_if_the_snake_alive(&self, dir: Option<Direction>) -> bool {
         let (next_x, next_y) = self.snake.next_head_position(dir);
 
+        // Check if the snake hits itself
+        if self.snake.is_overlap_except_tail(next_x, next_y) {
+            return false;
+        }
+
+        // Check if the snake overlaps with the border
         next_x > 0 && next_y > 0 && next_x < self.width - 1 && next_y < self.height - 1
     }
 
