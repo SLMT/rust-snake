@@ -15,7 +15,11 @@ The executable binary will appear in `target/debug`, called `rust-snake.exe`.
 ## TODOs
 
 - ~~To randomly generate foods~~
-- To make the snake move itself
+- ~~To make the snake move itself~~
 - To make the snake die when it hits itself
 - To make the snake die when it hits borders
 - To make the game restart after the snake dies
+
+## Bugs
+
+- Foods should not be shown up on top of the snake

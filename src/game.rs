@@ -9,8 +9,11 @@ use rand::{thread_rng, Rng};
 const FOOD_COLOR: Color = [0.90, 0.49, 0.13, 1.0];
 const BORDER_COLOR: Color = [0.741, 0.765, 0.78, 1.0];
 
+const MOVING_PERIOD: f64 = 0.25; // in second
+
 pub struct Game {
     snake: Snake,
+    waiting_time: f64,
 
     // Food
     food_exist: bool,
@@ -26,6 +29,7 @@ impl Game {
     pub fn new(width: i32, height: i32) -> Game {
         Game {
             snake: Snake::new(2, 2),
+            waiting_time: 0.0,
             food_exist: true,
             food_x: 5,
             food_y: 3,
@@ -69,7 +73,10 @@ impl Game {
         }
 
         // Move the snake
-        self.update_snake(None);
+        self.waiting_time += delta_time;
+        if self.waiting_time > MOVING_PERIOD {
+            self.update_snake(None);
+        }
     }
 
     fn check_eating(&mut self) {
@@ -97,6 +104,7 @@ impl Game {
         if self.check_next_position(dir) {
             self.snake.move_forward(dir);
             self.check_eating();
+            self.waiting_time = 0.0;
         }
     }
 }
