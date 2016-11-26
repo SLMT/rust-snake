@@ -10,11 +10,11 @@ const FOOD_COLOR: Color = [0.90, 0.49, 0.13, 1.0];
 const BORDER_COLOR: Color = [0.741, 0.765, 0.78, 1.0];
 const GAMEOVER_COLOR: Color = [0.91, 0.30, 0.24, 0.5];
 
-const MOVING_PERIOD: f64 = 0.25; // in second
+const MOVING_PERIOD: f64 = 0.2; // in second
+const RESTART_TIME: f64 = 1.0; // in second
 
 pub struct Game {
     snake: Snake,
-    waiting_time: f64,
 
     // Food
     food_exist: bool,
@@ -26,7 +26,10 @@ pub struct Game {
     height: i32,
 
     // Game state
-    is_game_over: bool
+    is_game_over: bool,
+    // When the game is running, it represents the waiting time from the previous moving
+    // When the game is over, it represents the waiting time from the end of the game
+    waiting_time: f64,
 }
 
 impl Game {
@@ -81,7 +84,13 @@ impl Game {
     }
 
     pub fn update(&mut self, delta_time: f64) {
+        self.waiting_time += delta_time;
+
+        // If the game is over
         if self.is_game_over {
+            if self.waiting_time > RESTART_TIME {
+                self.restart();
+            }
             return;
         }
 
@@ -91,7 +100,6 @@ impl Game {
         }
 
         // Move the snake
-        self.waiting_time += delta_time;
         if self.waiting_time > MOVING_PERIOD {
             self.update_snake(None);
         }
@@ -122,9 +130,18 @@ impl Game {
         if self.check_if_the_snake_alive(dir) {
             self.snake.move_forward(dir);
             self.check_eating();
-            self.waiting_time = 0.0;
         } else {
             self.is_game_over = true;
         }
+        self.waiting_time = 0.0;
+    }
+
+    fn restart(&mut self) {
+        self.snake = Snake::new(2, 2);
+        self.waiting_time = 0.0;
+        self.food_exist = true;
+        self.food_x = 5;
+        self.food_y = 3;
+        self.is_game_over = false;
     }
 }
