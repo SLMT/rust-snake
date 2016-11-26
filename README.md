@@ -12,7 +12,7 @@ Download Rust compiler from [here](https://www.rust-lang.org/en-US/), change the
 > cargo build
 ```
 
-The executable binary will appear in `target/debug`, called `rust-snake.exe`.
+The executable binary will appear in `target/debug`, called `rust-snake`.
 
 ## Game Controls & Rules
 
