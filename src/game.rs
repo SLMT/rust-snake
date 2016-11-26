@@ -44,10 +44,7 @@ impl Game {
         };
 
         // Check if the snake hits the border
-        if self.check_next_position(dir) {
-            self.snake.move_forward(dir);
-            self.check_eating();
-        }
+        self.update_snake(dir);
     }
 
     pub fn draw(&self, con: &Context, g: &mut G2d) {
@@ -70,6 +67,9 @@ impl Game {
         if !self.food_exist {
             self.add_food();
         }
+
+        // Move the snake
+        self.update_snake(None);
     }
 
     fn check_eating(&mut self) {
@@ -91,5 +91,12 @@ impl Game {
         self.food_x = rng.gen_range(1, self.width - 1);
         self.food_y = rng.gen_range(1, self.height - 1);
         self.food_exist = true;
+    }
+
+    fn update_snake(&mut self, dir: Option<Direction>) {
+        if self.check_next_position(dir) {
+            self.snake.move_forward(dir);
+            self.check_eating();
+        }
     }
 }
