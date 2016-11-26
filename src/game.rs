@@ -4,6 +4,7 @@ use piston_window::types::Color;
 
 use snake::{Snake, Direction};
 use drawing::{draw_block, draw_rectange};
+use rand::{thread_rng, Rng};
 
 const FOOD_COLOR: Color = [0.90, 0.49, 0.13, 1.0];
 const BORDER_COLOR: Color = [0.741, 0.765, 0.78, 1.0];
@@ -16,7 +17,7 @@ pub struct Game {
     food_x: i32,
     food_y: i32,
 
-    // Border
+    // Game Space
     width: i32,
     height: i32
 }
@@ -42,7 +43,7 @@ impl Game {
             _ => None
         };
 
-        // Check the next position of the snake
+        // Check if the snake hits the border
         if self.check_next_position(dir) {
             self.snake.move_forward(dir);
             self.check_eating();
@@ -64,6 +65,13 @@ impl Game {
         draw_rectange(BORDER_COLOR, self.width - 1, 0, 1, self.height, con, g);
     }
 
+    pub fn update(&mut self, delta_time: f64) {
+        // Check if the food still exists
+        if !self.food_exist {
+            self.add_food();
+        }
+    }
+
     fn check_eating(&mut self) {
         let (head_x, head_y): (i32, i32) = self.snake.head_position();
         if self.food_exist && self.food_x == head_x && self.food_y == head_y {
@@ -76,5 +84,12 @@ impl Game {
         let (next_x, next_y) = self.snake.next_head_position(dir);
 
         next_x > 0 && next_y > 0 && next_x < self.width - 1 && next_y < self.height - 1
+    }
+
+    fn add_food(&mut self) {
+        let mut rng = thread_rng();
+        self.food_x = rng.gen_range(1, self.width - 1);
+        self.food_y = rng.gen_range(1, self.height - 1);
+        self.food_exist = true;
     }
 }

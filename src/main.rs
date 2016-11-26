@@ -1,4 +1,5 @@
 extern crate piston_window;
+extern crate rand;
 
 mod snake;
 mod game;
@@ -34,6 +35,11 @@ fn main() {
         window.draw_2d(&event, |c, g| {
             clear(BACK_COLOR, g);
             game.draw(&c, g);
+        });
+
+        // Update the state of the game
+        event.update(|arg| {
+            game.update(arg.dt);
         });
     }
 }
