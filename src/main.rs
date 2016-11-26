@@ -17,7 +17,7 @@ fn main() {
     let (width, height) = (20, 20);
 
     // Create a window
-    let mut window: PistonWindow = WindowSettings::new("Hello Meow!!",
+    let mut window: PistonWindow = WindowSettings::new("Rust Snake",
         [to_gui_coord_u32(width), to_gui_coord_u32(height)]).exit_on_esc(true).build().unwrap();
 
     // Create a snake
