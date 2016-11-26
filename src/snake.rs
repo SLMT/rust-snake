@@ -9,9 +9,20 @@ use drawing::draw_block;
 
 const SNAKE_COLOR: Color = [0.18, 0.80, 0.44, 1.0];
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum Direction {
     Up, Down, Left, Right
+}
+
+impl Direction {
+    pub fn opposite(&self) -> Direction {
+        match *self {
+            Direction::Up => Direction::Down,
+            Direction::Down => Direction::Up,
+            Direction::Left => Direction::Right,
+            Direction::Right => Direction::Left
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -92,6 +103,10 @@ impl Snake {
     pub fn head_position(&self) -> (i32, i32) {
         let head_block = self.body.front().unwrap();
         (head_block.x, head_block.y)
+    }
+
+    pub fn head_direction(&self) -> Direction {
+        self.moving_direction
     }
 
     pub fn next_head_position(&self, dir: Option<Direction>) -> (i32, i32) {

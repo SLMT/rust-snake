@@ -59,6 +59,10 @@ impl Game {
             _ => None
         };
 
+        if dir.unwrap() == self.snake.head_direction().opposite() {
+            return;
+        }
+
         // Check if the snake hits the border
         self.update_snake(dir);
     }
