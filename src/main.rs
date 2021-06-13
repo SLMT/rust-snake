@@ -32,7 +32,7 @@ fn main() {
         }
 
         // Draw all of them
-        window.draw_2d(&event, |c, g| {
+        window.draw_2d(&event, |c, g, _| {
             clear(BACK_COLOR, g);
             game.draw(&c, g);
         });
