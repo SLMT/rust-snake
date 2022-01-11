@@ -16,9 +16,15 @@ const BACK_COLOR: Color = [0.204, 0.286, 0.369, 1.0];
 fn main() {
     let (width, height) = (20, 20);
 
+    // Prepare window settings
+    let mut window_settings = WindowSettings::new("Rust Snake",
+    [to_gui_coord_u32(width), to_gui_coord_u32(height)]).exit_on_esc(true);
+
+    // Fix vsync extension error for linux
+    window_settings.set_vsync(true); 
+
     // Create a window
-    let mut window: PistonWindow = WindowSettings::new("Rust Snake",
-        [to_gui_coord_u32(width), to_gui_coord_u32(height)]).exit_on_esc(true).build().unwrap();
+    let mut window: PistonWindow = window_settings.build().unwrap();
 
     // Create a snake
     let mut game = Game::new(width, height);
