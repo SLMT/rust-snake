@@ -1,10 +1,9 @@
-
-use piston_window::*;
 use piston_window::types::Color;
+use piston_window::*;
 
-use snake::{Snake, Direction};
 use drawing::{draw_block, draw_rectange};
 use rand::{thread_rng, Rng};
+use snake::{Direction, Snake};
 
 const FOOD_COLOR: Color = [0.90, 0.49, 0.13, 1.0];
 const BORDER_COLOR: Color = [0.741, 0.765, 0.78, 1.0];
@@ -42,7 +41,7 @@ impl Game {
             food_y: 3,
             width: width,
             height: height,
-            is_game_over: false
+            is_game_over: false,
         }
     }
 
@@ -56,7 +55,8 @@ impl Game {
             Key::Down => Some(Direction::Down),
             Key::Left => Some(Direction::Left),
             Key::Right => Some(Direction::Right),
-            _ => None
+            // Ignore other keys
+            _ => return,
         };
 
         if dir.unwrap() == self.snake.head_direction().opposite() {
