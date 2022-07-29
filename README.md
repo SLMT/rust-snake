@@ -4,31 +4,30 @@ A snake game written in Rust.
 
 <img src="screenshot.png" />
 
-## How To Build It ?
+## How To Run ?
 
-Download Rust compiler from [here](https://www.rust-lang.org/en-US/), change the working directory to the root of this project, then execute the following command:
+First, install the Rust development evnironment from [here](https://www.rust-lang.org/tools/install) (if you do not have one).
+
+Second, run the following command in the project directory:
 
 ```
-> cargo build
+> cargo run
 ```
 
-The executable binary will appear in `target/debug`, called `rust-snake`.
+Enjoy!
 
 ## Game Controls & Rules
 
 - Use the arrow keys on the keyboard to move the green snake.
-- Eat the orange food to make the snake stronger.
-- When the snake hits the border or itself, it will die.
+- Eat the orange food to make the snake stronger (or longer).
+- When the snake hits the border or itself, it dies.
 
 ## TODOs
 
-- ~~To randomly generate foods~~
-- ~~To make the snake move itself~~
-- ~~To make the snake die when it hits itself~~
-- ~~To make the snake die when it hits borders~~
-- ~~To make the game restart after the snake dies~~
 - To have a better game-over screen
 
-## Bugs
+## License
 
-- ~~Foods should not be shown up on top of the snake~~
+Copyright (c) 2016-2022 rust-snake's contributors.
+
+rust-snake is made available under the terms of [the MIT License](LICENSE.md).
