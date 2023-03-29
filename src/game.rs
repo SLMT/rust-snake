@@ -29,10 +29,11 @@ pub struct Game {
     // When the game is running, it represents the waiting time from the previous moving
     // When the game is over, it represents the waiting time from the end of the game
     waiting_time: f64,
+    ver: u8,
 }
 
 impl Game {
-    pub fn new(width: i32, height: i32) -> Game {
+    pub fn new(width: i32, height: i32, version: u8) -> Game {
         Game {
             snake: Snake::new(2, 2),
             waiting_time: 0.0,
@@ -42,6 +43,7 @@ impl Game {
             width: width,
             height: height,
             is_game_over: false,
+            ver:version,
         }
     }
 
@@ -86,7 +88,6 @@ impl Game {
             draw_rectange(GAMEOVER_COLOR, 0, 0, self.width, self.height, con, g);
         }
     }
-
     pub fn update(&mut self, delta_time: f64) {
         self.waiting_time += delta_time;
 
@@ -117,6 +118,11 @@ impl Game {
         }
     }
 
+    fn check_if_the_snake_touches_wall(&self, dir: Option<Direction>) -> bool {
+        let (x, y) = self.snake.next_head_position(dir);
+        x == 0 || y == 0 || x == self.width - 1 || y == self.height - 1
+    }
+
     fn check_if_the_snake_alive(&self, dir: Option<Direction>) -> bool {
         let (next_x, next_y) = self.snake.next_head_position(dir);
 
@@ -124,7 +130,6 @@ impl Game {
         if self.snake.is_overlap_except_tail(next_x, next_y) {
             return false;
         }
-
         // Check if the snake overlaps with the border
         next_x > 0 && next_y > 0 && next_x < self.width - 1 && next_y < self.height - 1
     }
@@ -147,7 +152,9 @@ impl Game {
     }
 
     fn update_snake(&mut self, dir: Option<Direction>) {
-        if self.check_if_the_snake_alive(dir) {
+        if self.check_if_the_snake_touches_wall(dir)  && self.ver == 2 {
+            self.snake.go_through_wall(dir, self.width, self.height);
+        } else if self.check_if_the_snake_alive(dir) {
             self.snake.move_forward(dir);
             self.check_eating();
         } else {

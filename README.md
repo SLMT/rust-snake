@@ -14,6 +14,18 @@ Second, run the following command in the project directory:
 > cargo run
 ```
 
+### Version 2
+
+If you want to play version 2 of the game, where the snake does not die when it touches the wall but
+just passes through on the other side. And dies only when it touches itself.
+
+Run following command for version 2
+
+```
+> cargo run -- 2
+```
+
+
 Enjoy!
 
 ## Game Controls & Rules

@@ -16,6 +16,13 @@ const BACK_COLOR: Color = [0.204, 0.286, 0.369, 1.0];
 fn main() {
     let (width, height) = (20, 20);
 
+    let mut version = 0;
+
+    if std::env::args().len() == 2 {
+        if std::env::args().nth(1).unwrap() == "2" {
+            version = 2;
+        }
+    }
     // Prepare window settings
     let mut window_settings = WindowSettings::new("Rust Snake",
     [to_gui_coord_u32(width), to_gui_coord_u32(height)]).exit_on_esc(true);
@@ -27,7 +34,7 @@ fn main() {
     let mut window: PistonWindow = window_settings.build().unwrap();
 
     // Create a snake
-    let mut game = Game::new(width, height);
+    let mut game = Game::new(width, height, version);
 
     // Event loop
     while let Some(event) = window.next() {
