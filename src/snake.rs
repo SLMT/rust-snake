@@ -10,6 +10,7 @@ use drawing::draw_block;
 const SNAKE_COLOR: Color = [0.18, 0.80, 0.44, 1.0];
 
 #[derive(Clone, Copy, PartialEq)]
+#[derive(Debug)]
 pub enum Direction {
     Up, Down, Left, Right
 }
@@ -66,6 +67,42 @@ impl Snake {
         }
     }
 
+    pub fn go_through_wall(&mut self, dir: Option<Direction>, width: i32, height: i32) {
+        // Retrieve the position of the head block
+        let (last_x, last_y): (i32, i32) = self.head_position();
+
+        match dir {
+            Some(d) => self.moving_direction = d,
+            None => {}
+        }
+
+        // The moves
+        let new_block = match self.moving_direction {
+            Direction::Up => Block {
+                x: last_x,
+                y: height - 2 
+            },
+            Direction::Down => Block {
+                x: last_x,
+                y: 0 
+            },
+            Direction::Left => Block {
+                x: width - 2, 
+                y: last_y
+            },
+            Direction::Right => Block {
+                x: 0,
+                y: last_y
+            }
+        };
+ 
+        self.body.push_front(new_block);
+        let removed_blk = self.body.pop_back().unwrap();
+        self.last_removed_block = Some(removed_blk);
+
+    }
+ 
+       
     pub fn move_forward(&mut self, dir: Option<Direction>) {
         // Change moving direction
         match dir {
